@@ -1,0 +1,35 @@
+## NGINX Site configuration
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/compu;
+    index  index.php index.html index.htm;
+    server_name  _;
+
+    location / {
+        try_files $uri /index.php?$query_string;        
+    }
+
+    location ^~ /sites/default/files/protected {          
+        internal;        
+    }   
+    location @rewrite {
+        rewrite ^/(.*)$ /index.php?q=$1;
+    }
+
+    location ~ [^/]\.php(/|$) {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ ^/sites/.*/files/styles/ { # For Drupal >= 7
+       try_files $uri @rewrite;
+    }
+
+    location ~ ^(/[a-z\-]+)?/system/files/ { # For Drupal >= 7
+        try_files $uri /index.php?$query_string;
+    }
+
+}
