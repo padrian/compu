@@ -64,4 +64,6 @@ sudo systemctl restart nginx.service
 
 ## setup docker and run stack
 cd /home/ubuntu/compu/ && sudo ./docker.sh
-docker build -t padriano/prom:latest .
+cd monitoring && docker build -t padriano/prom:latest .
+docker swarm init
+docker stack deploy --compose-file docker-compose.yaml monitoring
