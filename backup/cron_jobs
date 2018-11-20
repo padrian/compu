@@ -1,0 +1,4 @@
+09 00 * * * sudo automysqlbackup
+00 01 * * * sudo /home/ubuntu/compu/backup/daily.sh
+00 02 * * 2 sudo /home/ubuntu/compu/backup/weekly.sh
+00 03 5 * 2 sudo /home/ubuntu/compu/backup/monthly.sh

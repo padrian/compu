@@ -19,6 +19,8 @@ services:
       - '--storage.tsdb.retention=120d' 
     networks: 
       - default
+    ports:
+      - "9090:9090"
     deploy:
       restart_policy:
         condition: on-failure

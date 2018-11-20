@@ -2,7 +2,7 @@
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password qas123'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password qas123'
 sudo apt-get -y install mysql-server
-apt install automysqlbackup -y
+sudo apt install automysqlbackup -y
 
 ## create mysql databases and users
 
@@ -15,6 +15,14 @@ mysql -u "$MYSQL_ROOT" -p "$MYSQL_PASS" -e "GRANT ALL ON civicrm.* TO '$DRUPAL_D
 
 ## assign permisions to users for the databases
 ## assign permissions to civicrm database for drupal user;
+
+## add jobs to crontab :)
+
+(crontab -l 2>/dev/null; echo "09 00 * * * sudo automysqlbackup")| crontab -
+crontab -l|sed "\$a00 01 * * * sudo /home/ubuntu/compu/backup/daily.sh"|crontab -
+crontab -l|sed "\$a00 02 * * 2 sudo /home/ubuntu/compu/backup/weekly.sh"|crontab -
+crontab -l|sed "\$a00 03 5 * 2 sudo /home/ubuntu/compu/backup/monthly.sh"|crontab -
+
 
 
 
